@@ -11,12 +11,15 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import io.getstream.video.android.compose.permission.rememberCallPermissionsState
+import io.getstream.video.android.compose.ui.components.call.CallAppBar
 import io.getstream.video.android.compose.ui.components.call.activecall.CallContent
 import io.getstream.video.android.compose.ui.components.call.controls.actions.DefaultOnCallActionHandler
+import io.getstream.video.android.core.call.state.CallAction
 import io.getstream.video.android.core.call.state.LeaveCall
 
 @Composable
@@ -72,6 +75,16 @@ fun VideoCallScreen(
 
             val context = LocalContext.current
 
+            val onCallAction = remember<(CallAction) -> Unit> {
+                { action ->
+                    if (action == LeaveCall) {
+                        onAction(VideoCallAction.OnDisconnect)
+                    }
+
+                    DefaultOnCallActionHandler.onCallAction(state.call, action)
+                }
+            }
+
             CallContent(
                 call = state.call,
                 modifier = Modifier
@@ -91,15 +104,18 @@ fun VideoCallScreen(
                         }
                     }
                 ),
-                onCallAction = { action ->
-                    if (action == LeaveCall) {
-                        onAction(VideoCallAction.OnDisconnect)
-                    }
-
-                    DefaultOnCallActionHandler.onCallAction(state.call, action)
+                appBarContent = {
+                    CallAppBar(
+                        call = state.call,
+                        onCallAction = onCallAction,
+                        onBackPressed = {
+                            onCallAction(LeaveCall)
+                        }
+                    )
                 },
+                onCallAction = onCallAction,
                 onBackPressed = {
-                    onAction(VideoCallAction.OnDisconnect)
+                    onCallAction(LeaveCall)
                 }
             )
         }
