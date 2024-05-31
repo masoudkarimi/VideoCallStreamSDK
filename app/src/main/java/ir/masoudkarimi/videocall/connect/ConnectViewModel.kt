@@ -36,6 +36,6 @@ class ConnectViewModel(
         }
 
         (app as VideoCallApp).initVideoClient(state.name)
-        state.copy(isConnected = true)
+        state = state.copy(isConnected = true)
     }
 }
