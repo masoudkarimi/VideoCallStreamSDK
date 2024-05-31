@@ -7,14 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.getstream.video.android.compose.theme.VideoTheme
 import ir.masoudkarimi.videocall.connect.ConnectScreen
 import ir.masoudkarimi.videocall.connect.ConnectViewModel
 import ir.masoudkarimi.videocall.ui.theme.VideoCallTheme
@@ -67,7 +65,9 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
 
-                            VideoCallScreen(state = state, onAction = viewModel::onAction)
+                            VideoTheme {
+                                VideoCallScreen(state = state, onAction = viewModel::onAction)
+                            }
                         }
                     }
                 }
