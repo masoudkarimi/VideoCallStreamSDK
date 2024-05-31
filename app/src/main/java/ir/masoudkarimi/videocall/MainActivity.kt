@@ -32,7 +32,11 @@ class MainActivity : ComponentActivity() {
             VideoCallTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = ConnectRout) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = ConnectRout,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
                         composable<ConnectRout> {
                             val viewModel = koinViewModel<ConnectViewModel>()
                             val state = viewModel.state
@@ -62,7 +66,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
-                            
+
                             VideoCallScreen(state = state, onAction = viewModel::onAction)
                         }
                     }
