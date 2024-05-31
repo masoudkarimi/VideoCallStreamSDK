@@ -27,7 +27,8 @@ class VideoCallViewModel(
             }
 
             VideoCallAction.OnDisconnect -> {
-
+                state.call.leave()
+                state = state.copy(callState = CallState.ENDED)
             }
         }
     }
